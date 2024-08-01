@@ -17,7 +17,7 @@ import {
 const Index = () => {
   const [cryptos, setCryptos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('desc');
+  const [sortConfig, setSortConfig] = useState({ key: 'changePercent24Hr', order: 'desc' });
   const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
@@ -42,13 +42,20 @@ const Index = () => {
       crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
-      const changeA = parseFloat(a.changePercent24Hr);
-      const changeB = parseFloat(b.changePercent24Hr);
-      return sortOrder === 'asc' ? changeA - changeB : changeB - changeA;
+      const valueA = parseFloat(a[sortConfig.key]);
+      const valueB = parseFloat(b[sortConfig.key]);
+      if (sortConfig.order === 'asc') {
+        return valueA - valueB;
+      } else {
+        return valueB - valueA;
+      }
     });
 
-  const toggleSortOrder = () => {
-    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  const toggleSort = (key) => {
+    setSortConfig(prevConfig => ({
+      key,
+      order: prevConfig.key === key && prevConfig.order === 'desc' ? 'asc' : 'desc'
+    }));
   };
 
   return (
@@ -68,13 +75,23 @@ const Index = () => {
               <TableHead className="text-primary">Name</TableHead>
               <TableHead className="text-primary">Symbol</TableHead>
               <TableHead className="text-primary">Price (USD)</TableHead>
-              <TableHead className="text-primary">Market Cap (USD)</TableHead>
+              <TableHead className="text-primary">
+                Market Cap (USD)
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => toggleSort('marketCapUsd')}
+                  className="ml-2"
+                >
+                  <ArrowUpDown className="h-4 w-4" />
+                </Button>
+              </TableHead>
               <TableHead className="text-primary">
                 24h Change
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={toggleSortOrder}
+                  onClick={() => toggleSort('changePercent24Hr')}
                   className="ml-2"
                 >
                   <ArrowUpDown className="h-4 w-4" />
