@@ -42,7 +42,7 @@ const Index = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-primary hacker-glow">CryptoHack Market</h1>
+      <h1 className="text-4xl font-bold mb-8 text-primary hacker-glow">Crypto Assets</h1>
       <Input
         type="text"
         placeholder="Hack the crypto search..."
