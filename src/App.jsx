@@ -13,7 +13,7 @@ const App = () => (
       <Toaster />
       <BrowserRouter>
         <Navbar />
-        <main className="pt-16">
+        <main className="pt-20">
           <Routes>
             {navItems.map(({ to, page }) => (
               <Route key={to} path={to} element={page} />
