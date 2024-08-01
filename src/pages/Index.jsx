@@ -68,6 +68,7 @@ const Index = () => {
               <TableHead className="text-primary">Name</TableHead>
               <TableHead className="text-primary">Symbol</TableHead>
               <TableHead className="text-primary">Price (USD)</TableHead>
+              <TableHead className="text-primary">Market Cap (USD)</TableHead>
               <TableHead className="text-primary">
                 24h Change
                 <Button
@@ -90,6 +91,7 @@ const Index = () => {
                   <TableCell>{crypto.name}</TableCell>
                   <TableCell className="text-accent">{crypto.symbol}</TableCell>
                   <TableCell>${parseFloat(crypto.priceUsd).toFixed(2)}</TableCell>
+                  <TableCell>${(parseFloat(crypto.marketCapUsd) / 1e9).toFixed(2)}B</TableCell>
                   <TableCell className={parseFloat(crypto.changePercent24Hr) >= 0 ? 'text-green-400' : 'text-red-400'}>
                     {parseFloat(crypto.changePercent24Hr).toFixed(2)}%
                   </TableCell>
