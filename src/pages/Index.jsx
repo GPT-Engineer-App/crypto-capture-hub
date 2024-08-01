@@ -36,39 +36,41 @@ const Index = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-4">
-      <h1 className="text-3xl font-bold mb-6">Top 100 Cryptocurrencies</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold mb-8 text-primary hacker-glow">CryptoHack Market</h1>
       <Input
         type="text"
-        placeholder="Search cryptocurrencies..."
+        placeholder="Hack the crypto search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="mb-4"
+        className="mb-6 bg-secondary text-primary placeholder-primary/50 hacker-border"
       />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Rank</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Symbol</TableHead>
-            <TableHead>Price (USD)</TableHead>
-            <TableHead>24h Change</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredCryptos.map((crypto) => (
-            <TableRow key={crypto.id}>
-              <TableCell>{crypto.rank}</TableCell>
-              <TableCell>{crypto.name}</TableCell>
-              <TableCell>{crypto.symbol}</TableCell>
-              <TableCell>${parseFloat(crypto.priceUsd).toFixed(2)}</TableCell>
-              <TableCell className={parseFloat(crypto.changePercent24Hr) >= 0 ? 'text-green-600' : 'text-red-600'}>
-                {parseFloat(crypto.changePercent24Hr).toFixed(2)}%
-              </TableCell>
+      <div className="overflow-x-auto">
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow className="bg-secondary">
+              <TableHead className="text-primary">Rank</TableHead>
+              <TableHead className="text-primary">Name</TableHead>
+              <TableHead className="text-primary">Symbol</TableHead>
+              <TableHead className="text-primary">Price (USD)</TableHead>
+              <TableHead className="text-primary">24h Change</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredCryptos.map((crypto) => (
+              <TableRow key={crypto.id} className="hover:bg-secondary/50 transition-colors">
+                <TableCell className="font-medium">{crypto.rank}</TableCell>
+                <TableCell>{crypto.name}</TableCell>
+                <TableCell className="text-accent">{crypto.symbol}</TableCell>
+                <TableCell>${parseFloat(crypto.priceUsd).toFixed(2)}</TableCell>
+                <TableCell className={parseFloat(crypto.changePercent24Hr) >= 0 ? 'text-green-400' : 'text-red-400'}>
+                  {parseFloat(crypto.changePercent24Hr).toFixed(2)}%
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
