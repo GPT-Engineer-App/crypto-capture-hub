@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { Star, ArrowUpDown } from "lucide-react";
 import { useFavorites } from '@/hooks/useFavorites';
 import {
   Table,
@@ -17,6 +17,7 @@ import {
 const Index = () => {
   const [cryptos, setCryptos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc');
   const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
@@ -35,10 +36,20 @@ const Index = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const filteredCryptos = cryptos.filter(crypto =>
-    crypto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCryptos = cryptos
+    .filter(crypto =>
+      crypto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      const changeA = parseFloat(a.changePercent24Hr);
+      const changeB = parseFloat(b.changePercent24Hr);
+      return sortOrder === 'asc' ? changeA - changeB : changeB - changeA;
+    });
+
+  const toggleSortOrder = () => {
+    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -57,7 +68,17 @@ const Index = () => {
               <TableHead className="text-primary">Name</TableHead>
               <TableHead className="text-primary">Symbol</TableHead>
               <TableHead className="text-primary">Price (USD)</TableHead>
-              <TableHead className="text-primary">24h Change</TableHead>
+              <TableHead className="text-primary">
+                24h Change
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={toggleSortOrder}
+                  className="ml-2"
+                >
+                  <ArrowUpDown className="h-4 w-4" />
+                </Button>
+              </TableHead>
               <TableHead className="text-primary">Favorite</TableHead>
             </TableRow>
           </TableHeader>
