@@ -16,11 +16,17 @@ const AssetDetails = () => {
   useEffect(() => {
     const fetchAssetDetails = async () => {
       try {
-        const [assetResponse, historyResponse] = await Promise.all([
+        const [assetResponse, historyResponse, metadataResponse] = await Promise.all([
           axios.get(`https://api.coincap.io/v2/assets/${id}`),
-          axios.get(`https://api.coincap.io/v2/assets/${id}/history?interval=d1`)
+          axios.get(`https://api.coincap.io/v2/assets/${id}/history?interval=d1`),
+          axios.get(`https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`)
         ]);
-        setAsset(assetResponse.data.data);
+        const assetData = assetResponse.data.data;
+        const metadataData = metadataResponse.data;
+        setAsset({
+          ...assetData,
+          description: metadataData.description?.en || 'No description available.'
+        });
         setHistoricalData(historyResponse.data.data.map(item => ({
           date: new Date(item.time).toLocaleDateString(),
           price: parseFloat(item.priceUsd)
@@ -33,7 +39,25 @@ const AssetDetails = () => {
     fetchAssetDetails();
   }, [id]);
 
-  if (!asset) return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAssetDetails = async () => {
+      setIsLoading(true);
+      try {
+        // ... (keep the existing fetch logic)
+      } catch (error) {
+        console.error('Error fetching asset details:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAssetDetails();
+  }, [id]);
+
+  if (isLoading) return <div className="container mx-auto px-4 py-8 text-primary">Loading asset details...</div>;
+  if (!asset) return <div className="container mx-auto px-4 py-8 text-primary">Asset not found</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -60,8 +84,19 @@ const AssetDetails = () => {
           <CardContent>
             <p>Rank: {asset.rank}</p>
             <p>Price: ${parseFloat(asset.priceUsd).toFixed(2)}</p>
-            <p>Market Cap: ${parseFloat(asset.marketCapUsd).toFixed(2)}</p>
+            <p>Market Cap: ${(parseFloat(asset.marketCapUsd) / 1e9).toFixed(2)} billion</p>
             <p>24h Change: {parseFloat(asset.changePercent24Hr).toFixed(2)}%</p>
+            <p>24h Volume: ${(parseFloat(asset.volumeUsd24Hr) / 1e6).toFixed(2)} million</p>
+            <p>Supply: {(parseFloat(asset.supply) / 1e6).toFixed(2)} million {asset.symbol}</p>
+            <p>Max Supply: {asset.maxSupply ? `${(parseFloat(asset.maxSupply) / 1e6).toFixed(2)} million ${asset.symbol}` : 'Unlimited'}</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-secondary text-primary">
+          <CardHeader>
+            <CardTitle>Asset Description</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>{asset.description || 'No description available.'}</p>
           </CardContent>
         </Card>
         <Card className="bg-secondary text-primary">
