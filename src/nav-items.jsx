@@ -14,12 +14,6 @@ export const navItems = [
     page: <Index />,
   },
   {
-    title: "Asset Details",
-    to: "/asset/:id",
-    page: <AssetDetails />,
-    hidden: true,
-  },
-  {
     title: "Favorites",
     to: "/favorites",
     icon: <Star className="h-4 w-4" />,
