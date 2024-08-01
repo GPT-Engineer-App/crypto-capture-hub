@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -113,7 +114,11 @@ const AssetDetails = () => {
           <CardTitle>Asset Description</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>{asset.description || 'No description available.'}</p>
+          {asset.description ? (
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(asset.description) }} />
+          ) : (
+            <p>No description available.</p>
+          )}
         </CardContent>
       </Card>
     </div>
