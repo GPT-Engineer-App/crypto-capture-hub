@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
+import { useFavorites } from '@/hooks/useFavorites';
 import {
   Table,
   TableBody,
@@ -14,6 +17,7 @@ import {
 const Index = () => {
   const [cryptos, setCryptos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     const fetchCryptos = async () => {
@@ -55,11 +59,12 @@ const Index = () => {
               <TableHead className="text-primary">Symbol</TableHead>
               <TableHead className="text-primary">Price (USD)</TableHead>
               <TableHead className="text-primary">24h Change</TableHead>
+              <TableHead className="text-primary">Favorite</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredCryptos.map((crypto) => (
-              <TableRow key={crypto.id} className="hover:bg-secondary/50 transition-colors cursor-pointer">
+              <TableRow key={crypto.id} className="hover:bg-secondary/50 transition-colors">
                 <Link to={`/asset/${crypto.id}`} className="contents">
                   <TableCell className="font-medium">{crypto.rank}</TableCell>
                   <TableCell>{crypto.name}</TableCell>
@@ -69,6 +74,22 @@ const Index = () => {
                     {parseFloat(crypto.changePercent24Hr).toFixed(2)}%
                   </TableCell>
                 </Link>
+                <TableCell>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(crypto.id);
+                    }}
+                  >
+                    <Star
+                      className={`h-4 w-4 ${
+                        favorites.includes(crypto.id) ? 'fill-yellow-500 text-yellow-500' : 'text-primary'
+                      }`}
+                    />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -3,11 +3,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
+import { useFavorites } from '@/hooks/useFavorites';
 
 const AssetDetails = () => {
   const { id } = useParams();
   const [asset, setAsset] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
+  const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     const fetchAssetDetails = async () => {
@@ -33,7 +37,21 @@ const AssetDetails = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-primary hacker-glow">{asset.name} ({asset.symbol})</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold text-primary hacker-glow">{asset.name} ({asset.symbol})</h1>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => toggleFavorite(asset.id)}
+          className="hacker-border"
+        >
+          <Star
+            className={`h-6 w-6 ${
+              favorites.includes(asset.id) ? 'fill-yellow-500 text-yellow-500' : 'text-primary'
+            }`}
+          />
+        </Button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Card className="bg-secondary text-primary">
           <CardHeader>
