@@ -76,7 +76,7 @@ const AssetDetails = () => {
           />
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <Card className="bg-secondary text-primary">
           <CardHeader>
             <CardTitle>Asset Information</CardTitle>
@@ -89,14 +89,6 @@ const AssetDetails = () => {
             <p>24h Volume: ${(parseFloat(asset.volumeUsd24Hr) / 1e6).toFixed(2)} million</p>
             <p>Supply: {(parseFloat(asset.supply) / 1e6).toFixed(2)} million {asset.symbol}</p>
             <p>Max Supply: {asset.maxSupply ? `${(parseFloat(asset.maxSupply) / 1e6).toFixed(2)} million ${asset.symbol}` : 'Unlimited'}</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-secondary text-primary">
-          <CardHeader>
-            <CardTitle>Asset Description</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>{asset.description || 'No description available.'}</p>
           </CardContent>
         </Card>
         <Card className="bg-secondary text-primary">
@@ -116,6 +108,14 @@ const AssetDetails = () => {
           </CardContent>
         </Card>
       </div>
+      <Card className="bg-secondary text-primary">
+        <CardHeader>
+          <CardTitle>Asset Description</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>{asset.description || 'No description available.'}</p>
+        </CardContent>
+      </Card>
     </div>
   );
 };
