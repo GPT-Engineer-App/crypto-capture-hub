@@ -49,10 +49,10 @@
 }
 
 .hacker-glow {
-  text-shadow: 0 0 5px theme('colors.primary'), 0 0 10px theme('colors.primary');
+  text-shadow: 0 0 5px theme('colors.primary.DEFAULT'), 0 0 10px theme('colors.primary.DEFAULT');
 }
 
 .hacker-border {
-  border: 1px solid theme('colors.primary');
-  box-shadow: 0 0 5px theme('colors.primary'), 0 0 10px theme('colors.primary');
+  border: 1px solid theme('colors.primary.DEFAULT');
+  box-shadow: 0 0 5px theme('colors.primary.DEFAULT'), 0 0 10px theme('colors.primary.DEFAULT');
 }
