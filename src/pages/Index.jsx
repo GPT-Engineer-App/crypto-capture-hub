@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Input } from "@/components/ui/input";
 import {
@@ -58,14 +59,16 @@ const Index = () => {
           </TableHeader>
           <TableBody>
             {filteredCryptos.map((crypto) => (
-              <TableRow key={crypto.id} className="hover:bg-secondary/50 transition-colors">
-                <TableCell className="font-medium">{crypto.rank}</TableCell>
-                <TableCell>{crypto.name}</TableCell>
-                <TableCell className="text-accent">{crypto.symbol}</TableCell>
-                <TableCell>${parseFloat(crypto.priceUsd).toFixed(2)}</TableCell>
-                <TableCell className={parseFloat(crypto.changePercent24Hr) >= 0 ? 'text-green-400' : 'text-red-400'}>
-                  {parseFloat(crypto.changePercent24Hr).toFixed(2)}%
-                </TableCell>
+              <TableRow key={crypto.id} className="hover:bg-secondary/50 transition-colors cursor-pointer">
+                <Link to={`/asset/${crypto.id}`} className="contents">
+                  <TableCell className="font-medium">{crypto.rank}</TableCell>
+                  <TableCell>{crypto.name}</TableCell>
+                  <TableCell className="text-accent">{crypto.symbol}</TableCell>
+                  <TableCell>${parseFloat(crypto.priceUsd).toFixed(2)}</TableCell>
+                  <TableCell className={parseFloat(crypto.changePercent24Hr) >= 0 ? 'text-green-400' : 'text-red-400'}>
+                    {parseFloat(crypto.changePercent24Hr).toFixed(2)}%
+                  </TableCell>
+                </Link>
               </TableRow>
             ))}
           </TableBody>
