@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Star, ArrowUpDown } from "lucide-react";
 import { useFavorites } from '@/hooks/useFavorites';
+import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -120,6 +121,11 @@ const Index = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       toggleFavorite(crypto.id);
+                      const isFavorite = favorites.includes(crypto.id);
+                      toast(isFavorite ? "Removed from favorites" : "Added to favorites", {
+                        description: `${crypto.name} (${crypto.symbol}) has been ${isFavorite ? "removed from" : "added to"} your favorites.`,
+                        icon: <Star className={isFavorite ? "text-primary" : "text-yellow-500"} />,
+                      });
                     }}
                   >
                     <Star
