@@ -15,7 +15,7 @@ const Navbar = () => {
                 className="flex items-center px-3 py-2 rounded-md hover:bg-secondary hover:text-accent transition-colors hacker-border"
               >
                 {item.icon}
-                <span className="ml-2">{item.title}</span>
+                <span className="ml-2">CryptoTracker</span>
               </Link>
             ))}
           </div>
