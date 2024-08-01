@@ -6,7 +6,7 @@ const Navbar = () => {
     <nav className="bg-background text-primary border-b border-primary sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="text-xl font-bold hacker-glow">CryptoHack Market</Link>
+          <Link to="/" className="text-xl font-bold hacker-glow">CryptoTracker</Link>
           <div className="flex space-x-4">
             {navItems.map((item) => (
               <Link
